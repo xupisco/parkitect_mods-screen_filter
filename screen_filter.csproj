@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>screen_filter</AssemblyName>
+    <RootNamespace>screen_filter</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+    <!-- Override on the command line if the game or the mods folder move:
+         dotnet build -p:ParkitectManaged=... -p:ModOutputDir=... -->
+    <ParkitectManaged Condition="'$(ParkitectManaged)' == ''">D:\games\steam\steamapps\common\Parkitect\Parkitect_Data\Managed</ParkitectManaged>
+    <ModOutputDir Condition="'$(ModOutputDir)' == ''">$([System.Environment]::GetFolderPath(SpecialFolder.MyDocuments))\Parkitect\Mods\screen_filter</ModOutputDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+    <!-- The game's assemblies target netstandard 2.0. -->
+    <Reference Include="netstandard" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Parkitect"><HintPath>$(ParkitectManaged)\Parkitect.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.Postprocessing.Runtime"><HintPath>$(ParkitectManaged)\Unity.Postprocessing.Runtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ParkitectManaged)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ParkitectManaged)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(ParkitectManaged)\UnityEngine.IMGUIModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(ParkitectManaged)\UnityEngine.TextRenderingModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(ParkitectManaged)\Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ParkitectManaged)\UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UIModule"><HintPath>$(ParkitectManaged)\UnityEngine.UIModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- The game loads a single DLL per Mods/<folder> and prefers the one named after the folder,
+       so the folder and the assembly must both be called screen_filter. Sharing to the Workshop uploads
+       this whole folder, so only what the mod needs at runtime and on its Workshop page goes here. -->
+  <Target Name="CopyToModsFolder" AfterTargets="Build">
+    <MakeDir Directories="$(ModOutputDir)" />
+    <Copy SourceFiles="$(TargetPath);workshop\preview.png" DestinationFolder="$(ModOutputDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="screen_filter -> $(ModOutputDir)" />
+  </Target>
+
+</Project>

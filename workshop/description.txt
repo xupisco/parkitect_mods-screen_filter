@@ -1,0 +1,43 @@
+[h1]Screen Filter[/h1]
+The game comes with a couple of color filters, but you can't adjust them. This mod adds a [b]Custom[/b] filter that you can tune while looking at your park, plus camera effects for a less clean, more photographic look.
+
+[h2]Color filter[/h2]
+[list]
+[*]Brightness
+[*]Contrast
+[*]Saturation
+[*]Gamma
+[*]Temperature (warmer or cooler)
+[*]Tint (green or magenta)
+[*]Base filter: start from one of the game's own filters and adjust on top of it
+[/list]
+
+[h2]Effects[/h2]
+These work with or without the color filter, and [b]Use these effects[/b] turns them all off or on at once.
+[list]
+[*]Vignette and its softness: darker or lighter than the game's own vignette, or removed altogether
+[*]Film grain and its size
+[*]Chromatic aberration: colored fringes toward the edges of the screen
+[*]Bloom strength and threshold, on top of the game's own values
+[/list]
+At their default values, the effects leave the game's image exactly as it was.
+
+[h2]How to use it[/h2]
+[list]
+[*]Open a park and press [b]J[/b] to open the window. The key can be changed in the game's controls settings.
+[*]Tick [b]Use this filter[/b] to use the color filter, and move the sliders. The image changes as you drag.
+[*]Close the window with [b]J[/b], [b]Esc[/b] or its [b]X[/b] button. Your values are saved and come back next time.
+[*][b]Reset[/b] puts every slider back to its default. The base filter and the two checkboxes stay as they are.
+[/list]
+The same controls are also in the mod's settings, and Custom is listed with the other filters in the graphics options.
+
+[h2]Good to know[/h2]
+[list]
+[*]It only changes the image of the park. Menus and windows stay as they are.
+[*]The color filter costs about the same as one of the game's own filters. You may notice small hitches only while dragging its sliders.
+[*]The effects are drawn every frame while they are on, so they use a little more of your graphics card. Grain and chromatic aberration do nothing at 0.
+[*]The bloom sliders do nothing while bloom is turned off in the game's graphics options.
+[*]It only affects your own screen. Other players in a multiplayer game don't need it.
+[/list]
+
+Your saves don't depend on this mod. If you remove it, the game goes back to its first filter and its own effects.
