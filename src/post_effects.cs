@@ -47,19 +47,16 @@ namespace screen_filter
         private static saved_parameter<float> bloom_threshold;
 
         private static Vignette vignette;
-        private static bool vignette_added;
         private static saved_parameter<bool> vignette_enabled;
         private static saved_parameter<float> vignette_intensity;
         private static saved_parameter<float> vignette_smoothness;
 
         private static Grain grain;
-        private static bool grain_added;
         private static saved_parameter<bool> grain_enabled;
         private static saved_parameter<float> grain_intensity;
         private static saved_parameter<float> grain_size;
 
         private static ChromaticAberration aberration;
-        private static bool aberration_added;
         private static saved_parameter<bool> aberration_enabled;
         private static saved_parameter<float> aberration_intensity;
 
@@ -118,9 +115,9 @@ namespace screen_filter
                 aberration_enabled.restore();
                 aberration_intensity.restore();
 
-                remove_if_added(vignette, vignette_added);
-                remove_if_added(grain, grain_added);
-                remove_if_added(aberration, aberration_added);
+                // Effects the mod added stay in the profile, switched off by the restore above. Taken out of it, the
+                // camera would go on drawing them with their last values: the game's post processing only updates
+                // an effect while some profile holds it. The profile goes away with the park.
             }
             profile = null;
         }
@@ -148,41 +145,31 @@ namespace screen_filter
                 bloom_threshold = new saved_parameter<float>(bloom.threshold);
             }
 
-            vignette = find_or_add<Vignette>(out vignette_added);
+            vignette = find_or_add<Vignette>();
             vignette_enabled = new saved_parameter<bool>(vignette.enabled);
             vignette_intensity = new saved_parameter<float>(vignette.intensity);
             vignette_smoothness = new saved_parameter<float>(vignette.smoothness);
 
-            grain = find_or_add<Grain>(out grain_added);
+            grain = find_or_add<Grain>();
             grain_enabled = new saved_parameter<bool>(grain.enabled);
             grain_intensity = new saved_parameter<float>(grain.intensity);
             grain_size = new saved_parameter<float>(grain.size);
 
-            aberration = find_or_add<ChromaticAberration>(out aberration_added);
+            aberration = find_or_add<ChromaticAberration>();
             aberration_enabled = new saved_parameter<bool>(aberration.enabled);
             aberration_intensity = new saved_parameter<float>(aberration.intensity);
             return true;
         }
 
-        private static T find_or_add<T>(out bool added) where T : PostProcessEffectSettings
+        private static T find_or_add<T>() where T : PostProcessEffectSettings
         {
-            added = !profile.TryGetSettings(out T effect);
-            if (added)
+            if (!profile.TryGetSettings(out T effect))
             {
                 effect = profile.AddSettings<T>();
                 // It stays off until a slider asks for it.
-                effect.enabled.value = false;
+                effect.enabled.Override(false);
             }
             return effect;
-        }
-
-        private static void remove_if_added<T>(T effect, bool added) where T : PostProcessEffectSettings
-        {
-            if (added)
-            {
-                profile.RemoveSettings<T>();
-                Object.Destroy(effect);
-            }
         }
 
         private static void set_or_restore<T>(ParameterOverride<T> parameter, saved_parameter<T> saved, bool use, T value)

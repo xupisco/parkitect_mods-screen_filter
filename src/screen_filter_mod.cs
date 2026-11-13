@@ -44,7 +44,7 @@ namespace screen_filter
 
         public override string getVersionNumber()
         {
-            return "0.4.0";
+            return "0.4.1";
         }
 
         public override string getIdentifier()
